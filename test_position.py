@@ -17,4 +17,4 @@ print(shell_holdings)
  
 shell_holdings.print()
 
-#shell_holdings.update_position()
+shell_holdings.update_position()
