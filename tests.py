@@ -59,7 +59,7 @@ def test_position():
 
     # Add a generic buy:
     try:
-        shell_holdings = Position(Transaction("RDSA", "08/05/2020", "buy", 1, 1))
+        shell_holdings = Position(Transaction("RDSA", "01/05/2020", "buy", 1, 1))
         assert shell_holdings.name == "RDSA"
         assert shell_holdings.value == 1
         assert shell_holdings.amount == 1
@@ -73,13 +73,13 @@ def test_position():
 
     # Add a generic sell:
     try:
-        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "sell", 1, 2))
+        shell_holdings.add_transaction(Transaction("RDSA", "02/05/2020", "sell", 1, 8))
         assert shell_holdings.name == "RDSA"
         assert shell_holdings.value == 0
         assert shell_holdings.amount == 0
         assert shell_holdings.break_even_price == 0
         assert shell_holdings.currency == "euro"
-        assert shell_holdings.profit == 1
+        assert shell_holdings.profit == 7
     except:
         print("FAIL: Add generic sell order")
     else:
@@ -87,13 +87,7 @@ def test_position():
 
     # Add a generic sell to closed position:
     try:
-        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "sell", 1, 2))
-        assert shell_holdings.name == "RDSA"
-        assert shell_holdings.value == 0
-        assert shell_holdings.amount == 0
-        assert shell_holdings.break_even_price == 0
-        assert shell_holdings.currency == "euro"
-        assert shell_holdings.profit == 1
+        shell_holdings.add_transaction(Transaction("RDSA", "02/05/2020", "sell", 1, 2))
     except:
         print("PASS: Add sell to closed order")
     else:
@@ -103,19 +97,19 @@ def test_position():
 
     # Add a buy and 2 sell:
     try:
-        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "buy", 2, 1))
-        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "sell", 1, 2))
-        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "sell", 1, 2))
+        shell_holdings.add_transaction(Transaction("RDSA", "03/05/2020", "buy", 2, 1))
+        shell_holdings.add_transaction(Transaction("RDSA", "04/05/2020", "sell", 1, 2))
+        shell_holdings.add_transaction(Transaction("RDSA", "05/05/2020", "sell", 1, 2))
         assert shell_holdings.name == "RDSA"
         assert shell_holdings.value == 0
         assert shell_holdings.amount == 0
         assert shell_holdings.break_even_price == 0
         assert shell_holdings.currency == "euro"
-        assert shell_holdings.profit == 3
+        assert shell_holdings.profit == 9
     except:
-        print("FAIL: Add generic sell order")
+        print("FAIL: Add buy and sell")
     else:
-        print("PASS: Add generic sell order")
+        print("PASS: Add buy and sell")
 
 
     # Add a multiple buys:
@@ -128,7 +122,7 @@ def test_position():
         assert shell_holdings.amount == 4
         assert shell_holdings.break_even_price == 2
         assert shell_holdings.currency == "euro"
-        assert shell_holdings.profit == 3
+        assert shell_holdings.profit == 9
     except:
         print("FAIL: Add buy series")
     else:
@@ -150,7 +144,7 @@ def test_position():
     else:
         print("FAIL: add transaction of different currecny")
 
-
+    shell_holdings.generate_tax_events()
 
 def main():
     test_transaction()

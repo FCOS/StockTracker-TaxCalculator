@@ -26,13 +26,7 @@ class Position:
         
         return return_str 
 
-    def print(self):
-        for transaction in self.transactions:
-            print(transaction)
-
-    def add_transaction(self, transaction):
-        logging.debug('Adding new transaction to position:')
-        logging.debug(transaction)
+    def __iadd__(self, transaction):
         self.validate_transaction(transaction)
 
         # Sales get resolvedd imediately
@@ -65,6 +59,13 @@ class Position:
 
         self.update_position()
 
+    def print(self):
+        for transaction in self.transactions:
+            print(transaction)
+
+    def add_transaction(self, transaction):
+        self += transaction
+
 
     def update_position(self):
         self.value = 0
@@ -86,7 +87,9 @@ class Position:
 
 
     def generate_tax_events(self):
-        pass
+        for transaction in self.transactions:
+            if transaction.direction == "sell" and transaction.profit != 0:
+                print("TAX EVENT: " + transaction.date + " " + transaction.name + " - Profit=" + str(transaction.profit) + ", Tax=" + str(transaction.profit * 0.33))
 
     def validate_transaction(self, transaction):
         #Validate name
