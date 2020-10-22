@@ -99,6 +99,58 @@ def test_position():
     else:
         print("FAIL: Add sell to closed order")
 
+    
+
+    # Add a buy and 2 sell:
+    try:
+        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "buy", 2, 1))
+        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "sell", 1, 2))
+        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "sell", 1, 2))
+        assert shell_holdings.name == "RDSA"
+        assert shell_holdings.value == 0
+        assert shell_holdings.amount == 0
+        assert shell_holdings.break_even_price == 0
+        assert shell_holdings.currency == "euro"
+        assert shell_holdings.profit == 3
+    except:
+        print("FAIL: Add generic sell order")
+    else:
+        print("PASS: Add generic sell order")
+
+
+    # Add a multiple buys:
+    try:
+        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "buy", 2, 1))
+        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "buy", 1, 3))
+        shell_holdings.add_transaction(Transaction("RDSA", "08/05/2020", "buy", 1, 3))
+        assert shell_holdings.name == "RDSA"
+        assert shell_holdings.value == 8
+        assert shell_holdings.amount == 4
+        assert shell_holdings.break_even_price == 2
+        assert shell_holdings.currency == "euro"
+        assert shell_holdings.profit == 3
+    except:
+        print("FAIL: Add buy series")
+    else:
+        print("PASS: Add buy series")
+
+    # Add transaction of different product
+    try:
+        shell_holdings.add_transaction(Transaction("RDSB", "08/05/2020", "buy", 2, 1))
+    except:
+        print("PASS: add transaction of different product")
+    else:
+        print("FAIL: add transaction of different product")
+
+    # Add transaction of different currecny
+    try:
+        shell_holdings.add_transaction(Transaction("RDSB", "08/05/2020", "buy", 2, 1, "dollar"))
+    except:
+        print("PASS: add transaction of different currecny")
+    else:
+        print("FAIL: add transaction of different currecny")
+
+
 
 def main():
     test_transaction()
