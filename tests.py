@@ -20,7 +20,7 @@ def test_transaction():
 
     # Generic sell
     try:
-        test_transaction = Transaction("RDSB", "09/05/2020", "sell", 10, 15.224, "EAM", "USD")
+        test_transaction = Transaction("RDSB", "09/05/2020", "sell", 100, 15.224, "EAM", "USD")
         assert test_transaction.name == "RDSB"
         assert test_transaction.date == "09/05/2020"
         assert test_transaction.direction == "sell"
@@ -104,6 +104,8 @@ def test_position():
     else:
         print("PASS: Add generic sell order")
 
+    print(shell_holdings)
+
     # Add a generic sell to closed position:
     try:
         shell_holdings.add_transaction(Transaction("RDSA", "02/05/2020", "sell", 1, 2, "EAM"))
@@ -174,6 +176,18 @@ def test_position():
     print(shell_holdings)
     #.generate_tax_events()
 
+def test_portfolio():
+    new_portfolio = Portfolio()
+    new_portfolio.add_transaction(Transaction("RDSA", "08/05/2020", "buy", 3, 1, "EAM", "USD"))
+    new_portfolio.add_transaction(Transaction("RDSA", "08/05/2020", "buy", 2, 2, "EAM", "USD"))
+    new_portfolio.add_transaction(Transaction("RDSA", "08/05/2020", "sell", 4, 3, "EAM", "USD"))
+    new_portfolio.add_transaction(Transaction("RDSB", "08/05/2020", "buy", 1, 3, "EAM", "USD"))
+    new_portfolio.add_transaction(Transaction("RDSB", "08/05/2020", "buy", 1, 3, "EAM", "USD"))
+    new_portfolio.add_transaction(Transaction("RDSB", "08/05/2020", "sell", 2, 1, "EAM", "USD"))
+    new_portfolio.print_positions()
+
+    csv_portfolio()
+
 def test_csv_reader():
     csv_file = "./Transactions.csv"
     new_portfolio = Portfolio()
@@ -182,7 +196,8 @@ def test_csv_reader():
 def main():
     #test_transaction()
     #test_position()
-    test_csv_reader()
+    test_portfolio()
+    #test_csv_reader()
 
 if __name__ == '__main__':
     main()
