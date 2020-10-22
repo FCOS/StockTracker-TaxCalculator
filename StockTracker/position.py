@@ -11,6 +11,7 @@ class Position:
         self.amount = transaction.amount
         self.break_even_price = transaction.price
         self.currency = transaction.currency
+        self.index = transaction.index
         self.profit = 0
         self.transactions = deque()
         logging.debug('Adding initial transaction:')
@@ -19,6 +20,7 @@ class Position:
 
     def __str__(self):
         return_str = self.name + ", "
+        return_str += self.index + ", "
         return_str += "Quantity: " + str(self.amount) + ", "
         return_str += "Value: " + str(self.value) + ", "
         return_str += "BEP: " + str(self.break_even_price) + ", "
@@ -66,7 +68,6 @@ class Position:
     def add_transaction(self, transaction):
         self += transaction
 
-
     def update_position(self):
         self.value = 0
         self.amount = 0
@@ -85,7 +86,6 @@ class Position:
         if self.amount != 0:
             self.break_even_price /= self.amount
 
-
     def generate_tax_events(self):
         for transaction in self.transactions:
             if transaction.direction == "sell" and transaction.profit != 0:
@@ -95,6 +95,10 @@ class Position:
         #Validate name
         if self.name != transaction.name:
             raise ValueError("Transaction with name " + transaction.name + " cannot be added to Position of " + self.name)
+        
+        #Validate index
+        if self.index != transaction.index:
+            raise ValueError("Transaction with index " + transaction.index + " cannot be added to Position in index " + self.index)
         
         #Validate currency
         if self.currency != transaction.currency:

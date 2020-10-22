@@ -12,6 +12,7 @@ date - date of transaction
 direction -  buy/sell   
 amount - quantity of shares   
 price - price of product (individual)  
+index - index the produxt is sold on  
 currency - currency of the product (default euro)  
   
     
@@ -22,6 +23,7 @@ name - name of the produict inside the position
 value - running cost of the position (not live value yet)  
 amount - amount of owned products (bought - sold)  
 break_even_price - average purchase value of remaining shares  
+index - index the produxt is sold on  
 currency - currency of the products  
 profit - cumulative profit made from this position  
 transactions - deque of transactions that make up the position  

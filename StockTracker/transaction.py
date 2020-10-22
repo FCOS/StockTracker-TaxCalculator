@@ -1,16 +1,17 @@
 import logging
 
 class Transaction:
-    def __init__(self, name, date, direction, amount, price, currency="euro"):
-        self.validate_args(name, date, direction, amount, price, currency)
+    def __init__(self, name, date, direction, amount, price, index, currency="EUR"):
+        self.validate_args(name, date, direction, amount, price, index, currency)
 
         self.name = name
         self.date = date
         self.direction = direction.lower()
         self.amount = amount
         self.price = price
-        self.currency = currency.lower()
+        self.currency = currency.upper()
         self.open = amount
+        self.index = index
         self.profit = 0
 
         
@@ -22,14 +23,15 @@ class Transaction:
         return_str += "@"
         return_str += str(self.price) + " "
         return_str += self.currency + ", "
+        return_str += self.index + ", "
         return_str += self.date + ", "
         return_str += "Open: " + str(self.open)
         if self.direction == "sell":
             return_str += ", profit: " + str(self.profit)
         
         return return_str
-    
-    def validate_args(self, name, date, direction, amount, price, currency):
+
+    def validate_args(self, name, date, direction, amount, price, index, currency):
         #Validate name
         if type(name) is not str:
             raise ValueError("Data passed into name must be of type str. Recieved " + str(type(name)))
@@ -37,6 +39,10 @@ class Transaction:
         #Validate date
         if type(date) is not str:
             raise ValueError("Data passed into date must be of type str. Recieved " + str(type(date)))
+
+        #Validate index
+        if type(index) is not str:
+            raise ValueError("Data passed into index must be of type str. Recieved " + str(type(index)))
         
         #Validate direction
         if type(direction) is str:
@@ -54,14 +60,14 @@ class Transaction:
 
         #Validate price
         if type(price) is float or type(price) is int:
-            if price <= 0:
+            if price < 0:
                 raise ValueError("Provided price must be greater than 0. Recieved " + str(price))
         else:
-            raise ValueError("Data passed into amount must be a numberic data type. Recieved " + str(type(price)))
+            raise ValueError("Data passed into price must be a numberic data type. Recieved " + str(type(price)))
 
         #Validate currency
         if type(currency) is str:
-            if currency.lower() != "euro" and currency.lower() != "gbx" and currency.lower() != "dollar":
-                raise ValueError("Data passed into currency must be euro, dollar or gbx. Recieved " + currency)
+            if currency.upper() != "EUR" and currency.upper() != "GBX" and currency.upper() != "USD":
+                raise ValueError("Data passed into currency must be EUR, USD or GBX. Recieved " + currency)
         else:
             raise ValueError("Data passed into currency must be of type str. Recieved " + str(type(currency)))
