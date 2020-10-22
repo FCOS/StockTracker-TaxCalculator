@@ -42,12 +42,17 @@ class Portfolio:
 
         
 
-    def add_from_csv(self, csv_file, csv_format='degiro'):
+    def add_from_csv(self, csv_file, csv_format='degiro', newest_first=True):
         with open(csv_file, 'r') as csv:
+
+            lines = csv.readlines()
             # Disacrd header
-            line = csv.readline()
-            line = csv.readline()
-            while line != "":
+            del lines[0]
+
+            if newest_first:
+                lines = reversed(lines)
+
+            for line in lines:
                 if csv_format=="degiro":
                     date, _, name, _, index, amount, currency, price, *_  = line.split(',')
                 amount = int(amount)
@@ -59,4 +64,3 @@ class Portfolio:
                     direction = "buy"
                 transaction = Transaction(name, date, direction, amount, price, index, currency)
                 self.add_transaction(transaction)
-                line = csv.readline()

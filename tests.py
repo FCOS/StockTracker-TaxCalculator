@@ -186,12 +186,13 @@ def test_portfolio():
     new_portfolio.add_transaction(Transaction("RDSB", "08/05/2020", "sell", 2, 1, "EAM", "USD"))
     new_portfolio.print_positions()
 
-    csv_portfolio()
+    csv_portfolio = Portfolio('Transactions.csv', 'degiro')
+    csv_portfolio.print_positions()
 
 def test_csv_reader():
     csv_file = "./Transactions.csv"
     new_portfolio = Portfolio()
-    new_portfolio.parse_csv(csv_file)
+    new_portfolio.add_from_csv(csv_file)
 
 def main():
     #test_transaction()
