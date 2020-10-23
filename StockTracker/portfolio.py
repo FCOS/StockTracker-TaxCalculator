@@ -7,12 +7,16 @@ class Portfolio:
         self.value = 0
         self.num_open_positions = 0
         self.num_closed_positions = 0
+        self.closed_profit = 0
         self.positions = {}
         if csv_file != None:
             self.add_from_csv(csv_file, csv_format)
         
     def __str__(self):
-        pass
+        return_str = "Postitons: " + str(self.num_open_positions) + ", "
+        return_str += "Open cost: " + str(self.value) + ", "
+        return_str += "Closed Profits: " + str(self.closed_profit)
+        return return_str
 
     def print_positions(self):
         for key in self.positions.keys():
@@ -21,10 +25,14 @@ class Portfolio:
     def add_transaction(self, transaction):
         ID = transaction.name + transaction.index
         if ID in self.positions:
+            # Value and profit of a position will change when a sell order is added. 
+            # So we subtract, update position (by adding to it) and then add updated
             self.value -= self.positions[ID].value
+            self.closed_profit -= self.positions[ID].profit
             position = self.positions[ID]
             position += transaction
             self.value += self.positions[ID].value
+            self.closed_profit += self.positions[ID].profit
 
             if self.positions[ID].amount == 0:
                 # Position is now closed

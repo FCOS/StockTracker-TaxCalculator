@@ -24,7 +24,7 @@ def test_transaction():
         assert test_transaction.name == "RDSB"
         assert test_transaction.date == "09/05/2020"
         assert test_transaction.direction == "sell"
-        assert test_transaction.amount == 10
+        assert test_transaction.amount == 100
         assert test_transaction.price == 15.224
         assert test_transaction.index == "EAM"
         assert test_transaction.currency == "USD"
@@ -188,6 +188,7 @@ def test_portfolio():
 
     csv_portfolio = Portfolio('Transactions.csv', 'degiro')
     csv_portfolio.print_positions()
+    print(csv_portfolio)
 
 def test_csv_reader():
     csv_file = "./Transactions.csv"
@@ -196,8 +197,8 @@ def test_csv_reader():
 
 def main():
     #test_transaction()
-    #test_position()
-    test_portfolio()
+    test_position()
+    #test_portfolio()
     #test_csv_reader()
 
 if __name__ == '__main__':
